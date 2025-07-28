@@ -1,0 +1,19 @@
+---
+# defaults file for alcatel-omniswitch-update-check
+
+inventory_output: "./outdated_omniswitches.yml"
+ignore_list: ""
+
+uboot_file: "./aos_uboot.tmp"
+fpga_file: "./aos_fpga.tmp"
+firmware_file: "./aos_firmware.tmp"
+
+ansible_user: "{{ ansible_user }}"
+ansible_password: "{{ '{{' }} ssh_password {{ '}}' }}"
+# "{{ '{{' }} vault_network_password {{ '}}' }}" Variable doesnt get resolved
+ansible_python_interpreter: /usr/bin/python3
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: alcatel.aos8.aos8
+
+
+textfsm_folder: "{{ role_path }}/textfsm"

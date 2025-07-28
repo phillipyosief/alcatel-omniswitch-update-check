@@ -1,0 +1,20 @@
+Value cpu_type (.*)
+Value flash_manufacturer (.*)
+Value flash_size (.*)
+Value ram_manufacturer (.*)
+Value ram_size (.*)
+Value miniboot_version (.*)
+Value product_id_register (.*)
+Value hardware_revision_register (.*)
+Value cpld_revision_register (.*)
+
+Start
+  ^CPU Type\s+:\s+${cpu_type}
+  ^Flash Manufacturer\s+:\s+${flash_manufacturer}
+  ^Flash size\s+:\s+${flash_size}
+  ^RAM Manufacturer\s+:\s+${ram_manufacturer}
+  ^RAM size\s+:\s+${ram_size}
+  ^Miniboot Version\s+:\s+${miniboot_version}
+  ^Product ID Register\s+:\s+${product_id_register}
+  ^Hardware Revision Register\s+:\s+${hardware_revision_register}
+  ^CPLD Revision Register\s+:\s+${cpld_revision_register}

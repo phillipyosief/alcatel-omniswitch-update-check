@@ -1,0 +1,13 @@
+- name: "Collect raw microcode output"
+  alcatel.aos8.aos8_command:
+    commands:
+      - show microcode
+  register: raw_microcode_output
+
+- name: Parsing raw microcode output
+  set_fact:
+    parsed_release: "{{ raw_microcode_output.stdout_lines | regex_search('(\\d+)\\.\\d+\\.\\d+\\.\\w+', '\\1') }}"
+
+- name: Format parsed release
+  set_fact:
+    release: "{{ parsed_release[0] if parsed_release else 'unknown' }}"

@@ -1,0 +1,34 @@
+- include_tasks: "check_release.yml"
+
+- name: Collect raw microcode output
+  alcatel.aos8.aos8_command:
+    commands:
+      - "show microcode"
+  register: raw_microcode_output
+
+- name: Build TextFSM template path
+  set_fact:
+    template_path: "{{ textfsm_folder }}/ale_aos{{ release }}_show_microcode.textfsm"
+
+- name: Parsing raw microcode output
+  set_fact: 
+    microcode: "{{ raw_microcode_output.stdout[0] | ansible.netcommon.parse_cli_textfsm(template_path) }}"
+
+- name: Check if all releases are the same
+  set_fact:
+    all_releases_equal: "{{ microcode | map(attribute='release') | unique | length == 1 }}"
+
+- name: Output release version if all releases are the same
+  debug:
+    msg: "{{ microcode[0].release }}"
+  when: all_releases_equal
+  
+- name: Output all release versions if they are not all the same
+  debug:
+    msg: "{{ microcode | map(attribute='release') | join(', ') }}"
+  when: not all_releases_equal
+
+- name: Setting fact to firmware version
+  set_fact:
+    firmware_version: "{{ microcode[0].release }}"
+  when: all_releases_equal

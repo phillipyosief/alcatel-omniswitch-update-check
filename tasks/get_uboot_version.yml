@@ -1,0 +1,30 @@
+- include_tasks: "check_release.yml"
+
+- name: Collect raw hardware-info output
+  alcatel.aos8.aos8_command:
+    commands:
+      - "show hardware info"
+  register: raw_hardware_info_output
+  when: release == '6'
+
+- name: Collect raw hardware-info output
+  alcatel.aos8.aos8_command:
+    commands:
+      - "show hardware-info"
+  register: raw_hardware_info_output
+  when: release == '8'
+  
+- name: Build TextFSM template path
+  set_fact:
+    template_path: "{{ textfsm_folder }}/ale_aos{{ release }}_show_hardware-info.textfsm"
+  when: raw_hardware_info_output is defined
+
+- name: Parse U-Boot version
+  set_fact:
+    uboot_version: "{{ (raw_hardware_info_output.stdout[0] | ansible.netcommon.parse_cli_textfsm(template_path)).0 }}"
+  when: raw_hardware_info_output is defined
+
+- name: Format U-Boot version
+  set_fact:
+    uboot_version: "{{ uboot_version['uboot_version'] }}"
+  when: raw_hardware_info_output is defined

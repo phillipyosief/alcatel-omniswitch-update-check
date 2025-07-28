@@ -1,0 +1,132 @@
+{
+    "OS2260": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "5.2.7.R07"
+    },
+    "OS2360": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "5.2.7.R07"
+    },
+    "OS6100": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": ""
+    },
+    "OS6124": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": ""
+    },
+    "OS6200": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "1.7.1.12"
+    },
+    "OS6250": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.7.1.137.R04"
+    },
+    "OS6300": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": ""
+    },
+    "OS6350": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.7.2.192.R08"
+    },
+    "OS6360": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "8.10.115.R01"
+    },
+    "OS6400": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.4.5.635.R02"
+    },
+    "OS6450": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.7.2.210.R08"
+    },
+    "OS6465": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "8.10.115.R01"
+    },
+    "OS6560": {
+        "uboot": "8.10.42.R02",
+        "fpga": "0.8",
+        "firmware": "8.10.115.R01"
+    },
+    "OS6600": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": ""
+    },
+    "OS6800": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": ""
+    },
+    "OS6850": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.4.4.743.R01"
+    },
+    "OS6850E": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.4.6.440.R01"
+    },
+    "OS6855": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.4.6.440.R01"
+    },
+    "OS6860": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "8.10.115.R01"
+    },
+    "OS6865": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "8.10.115.R01"
+    },
+    "OS6900": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "8.10.115.R01"
+    },
+    "OS7000": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": ""
+    },
+    "OS9000": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.4.3.949.R01"
+    },
+    "OS9000E": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "6.4.6.440.R01"
+    },
+    "OS9900": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": "8.10.115.R01"
+    },
+    "OS10000": {
+        "uboot": "",
+        "fpga": "",
+        "firmware": ""
+    }
+}

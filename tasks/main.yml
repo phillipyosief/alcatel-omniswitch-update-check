@@ -1,0 +1,143 @@
+---
+# tasks file for alcatel-omniswitch-update-check
+
+- name: Initialize host_excluded variable
+  set_fact:
+    host_excluded: false
+
+- name: Check if host should be ignored
+  include_tasks: "check_ignore_list.yml"
+  when: ignore_list is defined and ignore_list != ""
+
+- name: Check release
+  include_tasks: "check_release.yml"
+  when: not host_excluded
+
+- name: Skip device if release is 6 (not supported)
+  set_fact:
+    host_excluded: true
+  when: 
+    - not host_excluded
+    - release is defined
+    - release == "6"
+
+- name: Debug skipped device
+  debug:
+    msg: "Skipping device {{ inventory_hostname }} - Release {{ release }} is not supported by this role"
+  when: 
+    - host_excluded
+    - release is defined
+    - release == "6"
+
+- name: Get model name
+  include_tasks: "get_model_name.yml"
+  when: not host_excluded
+
+- name: Get current U-Boot version
+  include_tasks: "get_uboot_version.yml"
+  when: not host_excluded
+
+- name: Get current FPGA version
+  include_tasks: "get_fpga_version.yml"
+  when: not host_excluded
+
+- name: Get current firmware version
+  include_tasks: "get_firmware_version.yml"
+  when: not host_excluded
+
+- name: Load JSON data from versions file
+  set_fact:
+    versions: "{{ lookup('file', role_path + '/files/versions.json') | from_json }}"
+  when: not host_excluded
+
+- name: Extract firmware, uboot, fpga version for specific device
+  set_fact:
+    versions_firmware: "{{ versions[model_name].firmware }}"
+    versions_fpga: "{{ versions[model_name].fpga }}"
+    versions_uboot: "{{ versions[model_name].uboot }}"
+  when: 
+    - not host_excluded
+    - model_name in versions
+
+- name: Handle unknown model
+  debug:
+    msg: "Model {{ model_name }} not found in versions.json - skipping update check"
+  when: 
+    - not host_excluded
+    - model_name not in versions
+
+- name: Compare versions and set update requirements
+  block:
+    - name: Compare U-Boot version
+      set_fact:
+        uboot_update_required: "{{ versions_uboot != '' and versions_uboot != uboot_version }}"
+    - name: Compare FPGA version
+      set_fact:
+        fpga_update_required: "{{ versions_fpga != '' and versions_fpga != fpga_version }}"
+    - name: Compare Firmware version
+      set_fact:
+        firmware_update_required: "{{ versions_firmware != '' and versions_firmware != firmware_version }}"
+  when: 
+    - not host_excluded
+    - model_name in versions
+
+- name: Display current vs target versions
+  debug:
+    msg:
+      - "Model: {{ model_name }}"
+      - "Current U-Boot: {{ uboot_version | default('N/A') }} -> Target: {{ versions_uboot | default('N/A') }}"
+      - "Current FPGA: {{ fpga_version | default('N/A') }} -> Target: {{ versions_fpga | default('N/A') }}"
+      - "Current Firmware: {{ firmware_version | default('N/A') }} -> Target: {{ versions_firmware | default('N/A') }}"
+      - "U-Boot update required: {{ uboot_update_required | default(false) }}"
+      - "FPGA update required: {{ fpga_update_required | default(false) }}"
+      - "Firmware update required: {{ firmware_update_required | default(false) }}"
+  when: 
+    - not host_excluded
+    - model_name in versions
+
+- name: Creating update requirement files
+  block:
+    - name: Add host to U-Boot update file if update is required
+      lineinfile:
+        path: "{{ uboot_file }}"
+        line: "{{ inventory_hostname }}"
+        create: yes
+        state: present
+        insertafter: EOF
+      when: uboot_update_required | default(false)
+      delegate_to: localhost
+
+    - name: Add host to FPGA update file if update is required
+      lineinfile:
+        path: "{{ fpga_file }}"
+        line: "{{ inventory_hostname }}"
+        create: yes
+        state: present
+        insertafter: EOF
+      when: fpga_update_required | default(false)
+      delegate_to: localhost
+
+    - name: Add host to Firmware update file if update is required
+      lineinfile:
+        path: "{{ firmware_file }}"
+        line: "{{ inventory_hostname }}"
+        create: yes
+        state: present
+        insertafter: EOF
+      when: firmware_update_required | default(false)
+      delegate_to: localhost
+  when: 
+    - not host_excluded
+    - model_name in versions
+
+- name: Generate network inventory
+  generate_inventory:
+    uboot_file: "{{ uboot_file }}"
+    fpga_file: "{{ fpga_file }}"
+    firmware_file: "{{ firmware_file }}"
+    inventory_file_path: "{{ inventory_output }}"
+    ansible_user: "{{ ansible_user }}"
+    ansible_password: "{{ ansible_password }}"
+  register: inventory_generation
+  delegate_to: localhost
+  run_once: true

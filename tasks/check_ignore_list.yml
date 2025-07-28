@@ -1,0 +1,18 @@
+- name: Read excluded IPs from ignore list
+  ansible.builtin.slurp:
+    src: "{{ ignore_list }}"
+  register: ignore_list_content
+
+- name: Decode and split excluded IPs into a list
+  set_fact:
+    excluded_ips: "{{ (ignore_list_content['content'] | b64decode).split('\n') | map('trim') | list }}"
+
+- name: Set fact for excluded host
+  set_fact:
+    host_excluded: true
+  when: inventory_hostname in excluded_ips
+  
+- name: Debug - Show message if host is excluded
+  ansible.builtin.debug:
+    msg: "This host {{ inventory_hostname }} is excluded and will be skipped."
+  when: host_excluded

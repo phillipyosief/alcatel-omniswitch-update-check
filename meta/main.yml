@@ -1,0 +1,39 @@
+galaxy_info:
+  author: Phillip Jerome Yosief
+  description: Automated version checking and update validation for Alcatel-Lucent OmniSwitch devices (AOS6/AOS8) with inventory generation capabilities.
+  company: Stadt-Frankfurt
+
+  # If the issue tracker for your role is not on github, uncomment the
+  # next line and provide a value
+  # issue_tracker_url: http://example.com/issue/tracker
+
+  license: MIT
+  min_ansible_version: "2.1"
+
+  # If this a Container Enabled role, provide the minimum Ansible Container version.
+  # min_ansible_container_version:
+
+  galaxy_tags:
+    - networking
+    - alcatel
+    - omniswitch
+    - version
+    - check
+    - update
+    - validation
+    - aos6
+    - aos8
+    - switches
+    - automation
+    - infrastructure
+    - network
+    - management
+    - compliance
+    - inventory
+    - enterprise
+    - monitoring
+    - firmware
+
+dependencies: []
+  # List your role dependencies here, one per line. Be sure to remove the '[]' above,
+  # if you add dependencies to this list.
