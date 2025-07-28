@@ -1,5 +1,5 @@
 # Alcatel OmniSwitch Update Check Ansible Role
-> Automated version checking and update validation for Alcatel-Lucent OmniSwitch devices (AOS6/AOS8)
+> Automated version checking and update validation for Alcatel-Lucent OmniSwitch devices (AOS8)
 
 [![Ansible Galaxy](https://img.shields.io/ansible/role/d/phillipyosief/alcatel-omniswitch-update-check)](https://galaxy.ansible.com/ui/standalone/roles/phillipyosief/alcatel-omniswitch-update-check/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -9,7 +9,7 @@ This Ansible role checks current firmware, FPGA, and U-Boot versions on Alcatel-
 ## Features
 
 - ✅ **Version Checking**: Compares current vs target versions
-- ✅ **AOS6/AOS8 Support**: Compatible with both AOS versions  
+- ✅ **AAOS8 Support**: Compatible with AOS8  
 - ✅ **Inventory Generation**: Creates update inventories automatically
 - ✅ **Exclusion Lists**: Support for ignore lists
 - ✅ **Multi-Component**: Checks firmware, FPGA, and U-Boot versions
@@ -44,6 +44,6 @@ ansible-galaxy install phillipyosief.alcatel-omniswitch-update-check
 
 ## Author & License
 
-**Phillip Jerome Yosief** – phillip.yosief@stadt-frankfurt.de
+**Phillip Jerome Yosief** – phillip.yosief@outlook.com
 
 Distributed under the MIT license.
