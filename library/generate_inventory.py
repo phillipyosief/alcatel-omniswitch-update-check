@@ -96,7 +96,7 @@ def main():
             inventory_file_path=dict(type='str', required=False, default='/home/user/temp/aos_toupdate.yml'),
             ansible_connection=dict(type='str', required=False, default='ansible.netcommon.network_cli'),
             ansible_network_os=dict(type='str', required=False, default='alcatel.aos8.aos8'),
-            ansible_user=dict(type='str', required=False, default='A160SA-Networkbot'),
+            ansible_user=dict(type='str', required=False, default='user'),
             ansible_password=dict(type='str', required=False, default='{{ ssh_password }}', no_log=True),
             ansible_python_interpreter=dict(type='str', required=False, default='/usr/bin/python3'),
         ),
@@ -126,3 +126,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
