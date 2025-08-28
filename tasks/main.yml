@@ -136,8 +136,8 @@
     fpga_file: "{{ fpga_file }}"
     firmware_file: "{{ firmware_file }}"
     inventory_file_path: "{{ inventory_output }}"
-    ansible_user: "{{ ansible_user }}"
-    ansible_password: "{{ ansible_password }}"
+    ansible_user: '{{ ansible_user }}'
+    ansible_password: '{{ ansible_password }}'
   register: inventory_generation
   delegate_to: localhost
   run_once: true
