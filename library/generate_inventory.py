@@ -37,9 +37,9 @@ def generate_inventory(module):
             "vars": {
                 "ansible_connection": ansible_connection,
                 "ansible_network_os": ansible_network_os,
-                # beide als QuotedString, damit sie literal im YAML bleiben
-                "ansible_user": QuotedString(ansible_user),
-                "ansible_password": QuotedString(ansible_password),
+                # als literal Jinja2-Strings für Environment-Variable Lookup
+                "ansible_user": QuotedString("{{ lookup('env', 'ANSIBLE_USER') }}"),
+                "ansible_password": QuotedString("{{ lookup('env', 'ANSIBLE_PASSWORD') }}"),
                 "ansible_python_interpreter": ansible_python_interpreter
             },
             "children": {
