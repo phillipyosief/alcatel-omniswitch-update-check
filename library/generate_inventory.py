@@ -2,6 +2,15 @@ from ansible.module_utils.basic import AnsibleModule
 import yaml
 import os
 
+# Wrapper-Klasse für Strings, die immer gequoted werden sollen
+class QuotedString(str):
+    pass
+
+def quoted_presenter(dumper, data):
+    return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
+
+yaml.add_representer(QuotedString, quoted_presenter)
+
 # Function to read IP addresses from a file into a list
 def read_ips(filename):
     with open(filename, 'r') as file:
@@ -28,8 +37,9 @@ def generate_inventory(module):
             "vars": {
                 "ansible_connection": ansible_connection,
                 "ansible_network_os": ansible_network_os,
-                "ansible_user": ansible_user,
-                "ansible_password": ansible_password,
+                # beide als QuotedString, damit sie literal im YAML bleiben
+                "ansible_user": QuotedString(ansible_user),
+                "ansible_password": QuotedString(ansible_password),
                 "ansible_python_interpreter": ansible_python_interpreter
             },
             "children": {
@@ -81,7 +91,14 @@ def generate_inventory(module):
     # Save the inventory as YAML file
     try:
         with open(inventory_file_path, 'w') as yaml_file:
-            yaml.dump(inventory_template, yaml_file, default_flow_style=False)
+            yaml.dump(
+                inventory_template,
+                yaml_file,
+                default_flow_style=False,
+                sort_keys=False,
+                allow_unicode=True,
+                width=1000
+            )
     except Exception as e:
         module.fail_json(msg=f"Error saving inventory file: {str(e)}")
 
@@ -96,8 +113,8 @@ def main():
             inventory_file_path=dict(type='str', required=False, default='/home/user/temp/aos_toupdate.yml'),
             ansible_connection=dict(type='str', required=False, default='ansible.netcommon.network_cli'),
             ansible_network_os=dict(type='str', required=False, default='alcatel.aos8.aos8'),
-            ansible_user=dict(type='str', required=False, default='user'),
-            ansible_password=dict(type='str', required=False, default='{{ ssh_password }}', no_log=True),
+            ansible_user=dict(type='str', required=False, default='{{ ansible_user }}'),
+            ansible_password=dict(type='str', required=False, default='{{ ansible_password }}', no_log=True),
             ansible_python_interpreter=dict(type='str', required=False, default='/usr/bin/python3'),
         ),
         supports_check_mode=True
@@ -126,4 +143,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
