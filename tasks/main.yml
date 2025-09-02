@@ -47,7 +47,7 @@
 
 - name: Load JSON data from versions file
   set_fact:
-    versions: "{{ lookup('file', role_path + '/files/versions.json') | from_json }}"
+    versions: "{{ lookup('file', versions_path) | from_json }}"
   when: not host_excluded
 
 - name: Extract firmware, uboot, fpga version for specific device
