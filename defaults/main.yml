@@ -3,6 +3,7 @@
 
 inventory_output: "./outdated_omniswitches.yml"
 ignore_list: ""
+versions: "{{ role_path }}/files/versions.json"
 
 uboot_file: "./aos_uboot.tmp"
 fpga_file: "./aos_fpga.tmp"
